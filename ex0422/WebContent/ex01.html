@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<title>Insert title here</title>
+</head>
+<body>
+	<table id=tbl>
+		<tr class=row sname=임연지 address=인천>
+			<td >1</td>
+			<td><button>출력</button></td>
+		</tr>
+		
+		<tr class=row sname=심현아 address=인천>
+			<td>2</td>
+			<td><button>출력</button></td>
+		</tr>
+	</table>
+	
+	<div>
+		<h1 id=sname></h1>
+		<h1 id=address></h1>
+		<input type=text id=print>
+	</div>
+</body>
+	<script>
+		$("#tbl").on("click",".row button",function(){
+			var row=$(this).parent().parent();
+			var name=row.attr("sname");
+			var address=row.attr("address");
+			
+			$("#sname").html(name);
+			$("#address").html(address);
+			$("#print").val(name+address);
+			
+		
+		});
+	
+	</script>
+
+</html>

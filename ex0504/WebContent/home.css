@@ -1,0 +1,5 @@
+@charset "UTF-8";
+.title{text-align:center;background:#FFEC57;}
+.hover:hover{background:#F7DF20;cursor:pointer;color:white}
+#slist, #clist{margin-bottom:10px;}
+#ctbl td, #stbl td{border:2px solid #FFE200;}

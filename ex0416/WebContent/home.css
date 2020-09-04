@@ -1,0 +1,36 @@
+@charset "UTF-8";
+
+<style>
+		h1{text-align:center;}
+		#content{width:760px;background:#C8FAC8;padding:10px;
+				margin:auto;overflow:hidden;}
+		.box{background:white;padding:10px;margin:10px;width:150px;
+			float:left;}
+		#menu{width:760px;margin:auto; margin-bottom:10px;}
+		.pname{text-align:center;}
+		.price{text-align:center;}
+		.box:hover{box-shadow:10px 10px 10px green;}
+		#darken-background {
+		 position:absolute;
+		 top:0px;			/*절대위치*/
+		 left:0px;
+		 right:0px;
+		 height:100%;
+		 display:none;
+		 background:rgba(0, 0, 0, 0.5);
+		 z-index:10000;
+		 overflow-y:scroll;
+		 }
+		 
+		 #lightbox {
+		 width:700px;
+		 margin:20px auto;
+		 padding:15px;
+		 border: 1px solid #333333;
+		 border-radius:5px;
+		 background:white;
+		 box-shadow:0px 5px 5px rgba(34, 25, 25, 0.4);
+		 text-align:center;
+		 }
+		
+	</style>

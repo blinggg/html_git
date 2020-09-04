@@ -1,0 +1,23 @@
+@charset "UTF-8";
+* {font-family:'Times New Roman';}
+body {background:gray;}
+#page{background:white; width:1000px;margin:auto;
+     box-shadow:10px 10px 10px black;
+     border-radius:10px 10px 10px 10px;
+     padding:20px;}
+#content{width:900px; border:1px solid gray;
+      margin:auto; padding:50px;}   
+.tbl{width:700px; margin:auto; border-collapse:collapse;
+      margin-top:20px;}   
+.tbl td{border:1px solid #353535; padding:5px;}   
+.tbl .title{background:gray; color:white; text-align:center;}
+.tbl .data:nth-child(2n+1){background:#EAEAEA;}   
+.tbl .data:hover{background:gray; color:white;}
+#menu{width:700px; margin:auto;}
+a{text-decoration:none; color:gray;font-size:20px;}
+a:hover{color:black;}   
+.tblInsert{width:700px; background:#EAEAEA;
+      border:1px solid gray;padding:20px;margin:20px auto;}
+.tblInsert td{padding:5px;}   
+input{height:25px;}
+.button{width:100px;height:35px;margin-right:30px;}  

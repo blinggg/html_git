@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>연습4</title>
+</head>
+<body>
+	<h1>목록태그</h1>
+	<h3>과일목록</h3>
+	
+	<!-- 순서가 없는 리스트 -->
+	<ul>
+		<li>사과  </li>
+		<li>바나나</li>
+		<li>오렌지</li>	
+	</ul>
+	
+	<!-- 순서가 있는 리스트 -->
+	<ol><li>사과  </li>
+		<li>바나나</li>
+		<li>오렌지</li>	
+	</ol>
+	
+	<h1>시간표</h1>
+	<table border=1 width=500>
+		<tr>
+			<th>월</th>
+			<th>화</th>
+			<th>수</th>
+			<th>목</th>
+			
+			
+		</tr>
+	</table>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>카카오 지역검색</title>
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script> <!-- 제이쿼리 라이브러리 임포트=> 사용가능함 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script> 
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=8435c4ce5155ad1a2bb35e6227a1f65f"></script>
+<style>
+	#tbl{width:800px;border-collapse:collapse;}
+	td{border:2px solid green;}
+	.row:hover{background:#ccf34d;color:white;}
+	.title{background:#f9f98f;color:black;text-align:center;}
+	.place{width:200px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;}
+	.address{width:350px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;}
+	.phone{width:150px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;}
+	.location{width:100px;}
+	 #map{width:700px;height:400px;border:1px solid gray;margin-top:10px;
+          display:none;}
+
+	
+</style>
+</head>
+<body>
+	<h1>[카카오 지역검색]</h1>
+	<div id=search>
+		검색수:<span id=total></span>
+		<input type=text id=txtSearch value=학익동>
+		<input type=button id=btnSearch value=검색>
+	</div>
+	
+	<table id=tbl></table>
+	<script id=temp type="text/x-handlebars-template">
+		<tr class=title>
+			<td>Title</td><td>Address</td><td>Telephone</td><td>Location</td>
+		</tr>
+	{{#each documents}}
+		<tr class=row>
+			<td><div class=place><a href='{{place_url}}'>{{place_name}}</a></div></td>
+			<td><div class=address>{{address_name}}</div></td>
+			<td><div class=phone>{{phone}}</div></td>
+			<td class=location><button x={{x}} y={{y}}>위치보기</button></td>
+		</tr>
+	{{/each}}
+
+	</script>
+	<div id=pagination>
+		<button id=btnPre>이전</button>
+		<button id=btnNext>다음</button>
+		현재페이지:<span id=page></span>
+	</div>
+	<!-- 지도 출력 -->
+	<div id=map></div>
+</body>
+
+<script>
+	//변수선언하기
+	var page=1;
+	var is_end;
+	var place_url;
+	
+	//메서드 호출하기
+	getList();
+	
+	
+	$("#tbl").on("click", ".row button", function(){
+		var x=(this).attr("x");
+		var y=(this).attr("y");
+		$("#map").show();
+
+		var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+		var options = { //지도를 생성할 때 필요한 기본 옵션
+			center: new kakao.maps.LatLng(y, x), //지도의 중심좌표.
+			level: 3 //지도의 레벨(확대, 축소 정도)
+		};
+		var marker=new kakao.maps.Marker({position:new kakao.maps.LatLng(y,x)});
+		var map = new kakao.maps.Map(container, options); 
+		marker.setMap(map);
+	});
+	
+	//이전 버튼을 눌렀을 때
+	$("#btnPre").on("click",function(){
+		if(page>1){
+			page=page-1;
+			getList();
+		}
+	});
+	
+	//다음 버튼을 눌렀을 때
+	$("#btnNext").on("click", function(){
+		if(is_end==false){
+			page=page+1;
+			getList();
+		}
+	});
+	
+	//검색하면 실행하는 메서드
+	$("#btnSearch").on("click",function(){
+		page=1;
+		getList();
+	});
+	
+	//엔터키를 실행했을 때 메서드
+	$("#txtSearch").keydown(function(key){
+		if(key.keyCode==13){
+			page=1;
+			getList();
+		}
+	});
+	
+	function getList(){
+		
+		var query=$("#txtSearch").val(); //쿼리 값 지정하기
+		$("#page").html(page);
+		
+		$.ajax({
+			type:"get",
+			headers:{"Authorization":"KakaoAK 8435c4ce5155ad1a2bb35e6227a1f65f"},
+			dataType:"json",
+			data:{"query":query, "page":page, "size":5},
+			url:"https://dapi.kakao.com/v2/local/search/keyword.json",
+			
+			success:function(data){//응답받고 싶은 변수명
+				var total=data.meta.pageable_count; //출력되는 건수 표현
+				is_end=data.meta.is_end;			//마지막 페이지 표현
+				place_url=data.documents.place_url;	//장소 링크 표현
+				
+				$("#total").html("<b>"+total+"</b>건"); //total 값 출력하기
+				
+				var temp=Handlebars.compile($("#temp").html());
+				$("#tbl").html(temp(data));
+			
+			}
+		});
+	 }
+
+</script>
+
+</html>

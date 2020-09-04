@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>주소관리</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script> <!-- 제이쿼리 임포트해줘야지 사용가능함 -->
+</head>
+<body>
+	<h1>[주소관리]</h1>
+	이름:<input type=text id=txtName value=함연주  width=50>
+	<hr>
+	주소:<input type=text id=txtAddress value=인천 width=100>
+	<hr>
+	<input type=reset value=취소 id=btnCancel>
+	<input type=button value=저장 id=btnSave>
+	<br><br>
+	
+	<input type=button value=선택삭제 id=btnDel>
+	<table id=tbl border=1 width=500>
+		<tr>
+			<td><input type=checkbox id=checkAll></td>
+			<td>이름</td>
+			<td>주소</td>
+			<td width=50>삭제</td>
+		</tr>
+	</table>
+</body>
+<script>
+
+	//전체선택 해제버튼을 클릭했을 때
+	$("#checkAll").click(function(){
+		if($(this).is(":checked")){
+			$("#tbl .row .chk:checkbox").each(function(){ //: 속성이!
+				$(this).prop("checked",true);	//체크 올이 선택되면 전체 체크해~
+		});
+	
+	}else{
+		$("#tbl .row .chk:checkbox").each(function(){
+			$(this).prop("checked",false);	//체크 올이 해제되면 전체 체크해제 해~
+			});
+		}
+	});
+	
+	//선택삭제 버튼을 눌렀을 때
+	$("#btnDel").click(function(){ 
+		if(!confirm("선택한 행을 삭제하시겠습니까?")) return;
+		$("#tbl .row .chk:checkbox").each(function(){
+			var row=$(this).parent().parent();
+			$(row).remove();
+			
+		}); 
+	});
+
+	//행에 있는 삭제버튼을 클릭했을 때
+	$("#tbl").on("click",".row button",function(){
+		if(confirm("삭제하겠습니까?")==false) return; //명령어 하나일 때는 중괄호 생략가능함.
+		var row=$(this).parent().parent();
+		$(row).remove();
+	});
+
+	
+	//저장버튼 눌렀을때
+	$("#btnSave").click(function(){
+		if(!confirm("저장하시겠습니까?")) return; //컴펌창을 빠져나온다
+		
+		var name=$("#txtName").val();
+		var address=$("#txtAddress").val();
+
+		var str="<tr class='row'>"; //제목줄 살리기 위해
+		str +="<td><input type='checkbox' class='chk'></td>";
+		str +="<td>"+name+"</td>";
+		str +="<td>"+address+"</td>";
+		str +="<td><button>삭제</button></td>";
+		str +="</tr>";
+		$("#tbl").append(str);
+	});
+</script>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>자바스크립트 함수</title>
+<script>
+	 //리턴타입이 없는 함수
+	 function sum(){
+		 var tot=0;
+		 for(i=0; i<=100; i++){
+			 tot=tot+i;
+		 }
+		 alert("1부터 100까지의 합계는?"+tot);
+	 }
+	 
+	 
+	function funColor(color, back){
+		 alert(color);
+		 var h=document.getElementById("header"); //아이디가 헤더인 값을 가져와서 h에 저장하기
+		 h.style.color=color;
+		 h.style.background=back;
+	 }
+	 
+	 function funback(back){
+		 alert(back);
+		 var name=document.getElementsByClassName("name");
+		 for(i=0; i<name.length; i++){ //클래스가 여러개라서 배열문을 사용함
+			 var n=name[i];
+			 n.style.background=back;
+		 }
+	 }
+	 
+	 //메소드 호출하기(2번 호출하기)
+	 sum();
+	 sum();
+
+</script>
+</head>
+<body>
+	<button onclick="sum();">1~100까지의 합계</button>
+	<input type=button value="1~100까지의 합계" onclick="sum();">
+	
+	<button onclick="location.href='http://www.naver.com'">네이버</button>
+	
+	<hr>
+	<h1 id=header>안녕하세요.</h1>
+	<button onclick="funColor('red','pink')">빨강</button>
+	<button onclick="funColor('yellow','green')">노랑</button>
+	<button onclick="funColor('blue','yellow')">파랑</button>
+	
+	<h1 class="name">홍길동</h1>
+	<h1 class="name">강감찬</h1>
+	<h1 class="name">심청이</h1>
+	<h1 class="name">이몽룡</h1>
+	<button onclick="funback('red')">빨강</button>
+	<button onclick="funback('yellow')">노랑</button>
+	<button onclick="funback('blue')">파랑</button>
+	
+	
+</body>
+</html>

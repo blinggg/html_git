@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>시멘틱 태그 연습</title>
+</head>
+<body>
+	<header>
+		<h1>시멘틱 태그연습</h1>
+		<hr1>
+	</header>
+	
+	<nav>
+	</nav>
+	
+	<section>
+	</section>
+	
+	
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>연습4</title>
+</head>
+<body>
+	<h1>목록태그</h1>
+	<h3>과일목록</h3>
+	
+	<!-- 순서가 없는 리스트 -->
+	<ul>
+		<li>사과  </li>
+		<li>바나나</li>
+		<li>오렌지</li>	
+	</ul>
+	
+	<!-- 순서가 있는 리스트 -->
+	<ol><li>사과  </li>
+		<li>바나나</li>
+		<li>오렌지</li>	
+	</ol>
+	
+	<h1>시간표</h1>
+	<table border=1 width=500>
+		<tr>
+			<th>월</th>
+			<th>화</th>
+			<th>수</th>
+			<th>목</th>
+			
+			
+		</tr>
+		<tr>
+			<td>국어</td>
+			<td>수학</td>
+			<td>과학</td>
+			<td>수학</td>
+		</tr>
+		
+		<tr>
+			<td>영어</td>
+			<td>엑셀</td>
+			<td>미술</td>
+			<td>java</td>
+			
+		</tr>
+		</table>
+		
+		<h1>테이블 연습01</h1>
+		<table border=1 width=500>
+			<tr>
+				<td colspan=2>1</td>
+				<td>2</td>
+			</tr>
+			<tr>
+				<td>3</td>
+				<td>4</td>
+				<td rowspan=2>5</td>
+			</tr>
+			<tr>
+				<td>6</td>
+				<td>7</td>
+			</tr>
+		</table>
+		
+		<h1>테이블 연습02</h1>
+		<table border=1 width=500>
+			<tr>
+			<td>1</td>
+			<td colspan=2>2</td>
+			<td>3</td>
+			</tr>
+			<tr>
+			<td rowspan=3>4</td>
+			<td>5</td>
+			<td rowspan=2>6</td>
+			<td>7</td>
+			</tr>
+			
+			<tr>
+			<td>8</td>
+			<td>9</td>
+			</tr>
+			
+			<tr>
+			<td>10</td>
+			<td>11</td>
+			<td>12</td>
+		
+		</table>
+		
+		<h1>테이블 연습03</h1>
+		<table border=1 width=500>
+		<tr>
+		<th colspan=6>브랜드</th>
+		</tr>
+		
+		<tr>
+		<th rowspan=6>애플</th>
+		<td>노키아</td>
+		<th rowspan=9>삼성</th>
+		<td>진에어</td>
+		<th rowspan=5>넥슨</th>
+		<td>카트라이더</td>
+		</tr>
+		
+		<tr>
+		<td>샤오미</td>
+		<td>SK</td>
+		<td>넷마블</td>
+		</tr>
+		
+		<tr>
+		<td>샤오미</td>
+		<td>SK</td>
+		<td>넷마블</td>
+		</tr>
+		
+		<tr>
+		<td>코보</td>
+		<td>OK EN</td>
+		<td>Rush N Cash</td>
+		</tr>
+		
+		<tr>
+		<td>천재교육</td>
+		<td>메가스터디</td>
+		<td>김밥나라</td>
+		</tr>
+		
+		<tr>
+		<td>라인</td>
+		<td>소니</td>
+		<th rowspan=4>폴바세티</th>
+		<td>공차</td>
+		</tr>
+		
+		<tr>
+		<th rowspan=3>네이버</th>
+		<td>구글</td>
+		<td>다음</td>
+		<td>야후</td>
+		</tr>
+		
+		<tr>
+		<td>오뚜기</td>
+		<td>삼양</td>
+		<td>농심</td>
+		</tr>
+		
+		<tr>
+		<td>두부</td>
+		<td>전골</td>
+		<td>냉면</td>
+		</tr>
+		
+	
+		</table>
+</body>
+</html>

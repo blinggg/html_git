@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>연습2</title>
+	<link rel="stylesheet" href="home.css"/>
+	<style>
+	h1 {background:blue;}
+	</style>
+</head>
+<body>
+	<h1 style="background:pink">연습2의 h1태그입니다.</h1>
+</body>
+</html>

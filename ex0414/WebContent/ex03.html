@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+	<title>jQuery 라이브러리</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script> <!-- 제이쿼리 임포트해줘야지 사용가능함 -->
+	<style>
+		div {background:pink;width:300px;border:2px solid black;
+			margin:20px;text-align:center;font-size:30px;}
+			
+	</style>
+</head>
+<body>
+	<button id=sum>1부터 100까지의 합계는?</button>
+	<h1 id=header>안녕하세요~</h1>
+	
+	<h1 class=name>홍길동</h1>
+	<h1 class=name>심청이</h1>
+	<h1 class=name>강감찬</h1>
+	<h1 class=name>이몽룡</h1>
+	<button id=btnGreen>배경색을 초록색으로</button>
+	<button id=btnRed>배경색을 빨강색으로</button>
+	<button id=btnNaver>네이버로 이동하기</button>
+	
+	<div>안녕하세요!</div>
+		<div>안녕하세요!</div>
+	<div>안녕하세요!</div>
+</body>
+
+	<script>
+	$("div").hover(function(){
+		$(this).css("background","purple")
+		$(this).css("color","white");
+	}, function(){
+		$(this).css("background","blue")
+		$(this).css("color","white");
+	});
+	
+	$("#btnGreen").on("click", function(){
+		$(".name").css("background","green");
+		$(".name").css("color","yellow");
+	});
+	
+	$("#btnRed").on("click",function(){
+		$(".name").css("background","red");
+		$(".name").css("color","white");
+	});
+	
+	$("#btnNaver").on("click",function(){
+		location.href="http://www.naver.com";
+	
+	});
+	
+	
+	$("#header").on("click", function(){
+		$("#header").css("background","yellow");
+	});
+	
+	$("#sum").on("click",function(){
+			var sum=0;
+			for(i=0; i<=100; i++){
+				sum=sum+i;
+			}
+			alert(sum);
+		});
+	
+	</script>
+</html>

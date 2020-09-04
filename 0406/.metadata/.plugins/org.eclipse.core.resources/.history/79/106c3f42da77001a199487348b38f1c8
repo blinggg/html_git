@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>홍길동 쇼핑몰</title>
+<style>
+	span {background:yellow;
+	padding:10px;
+	margin:10px;width:200px; height:200px;}
+	table{margine:0px auto;} /*테이블 가운데 정렬*/
+</style>
+</head>
+<body>
+
+<header>
+<h1>홍길동 쇼핑몰</h1>
+<hr/>
+</header>
+
+<nav>
+</nav>
+
+<section>
+	<table border=1 width=800>
+	<tr>
+		<td>
+		<img: src="http://placehold.it/150x150"><br>
+		상품명:더블침대<br>
+		가격:100만원
+	</td>
+	
+		
+		<td>
+		<img: src="http://placehold.it/150x150"><br>
+		상품명:더블침대<br>
+		<br>가격:100만원
+	</td>
+	
+		
+		<td>
+		<img: src="http://placehold.it/150x150"><br>
+		상품명:더블침대<br>
+		<br>가격:100만원
+	</td>
+	
+		
+		<td>
+		<img: src="http://placehold.it/150x150"><br>
+		상품명:더블침대<br>
+		<br>가격:100만원
+	</td>
+	</tr>
+	</table>
+	
+</section>
+
+<footer>
+	<h3>주소:인천 미추홀구 학익동</h3>
+</footer>
+
+
+
+
+</body>
+</html>

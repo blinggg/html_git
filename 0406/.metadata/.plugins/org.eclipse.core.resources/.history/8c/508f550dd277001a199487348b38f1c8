@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>시멘틱 태그 연습</title>
+</head>
+<body>
+	<header>
+		<h1>시멘틱 태그연습</h1>
+		<hr/>
+	</header>
+	
+	<nav>
+	</nav>
+	
+	<section>
+	</section>
+	
+	<footer>
+		<h3 작성자:ICIA 교육원 홍길동</h3>
+		
+	</footer>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>[상품등록]</title>
+	<link rel="stylesheet" href="home.css">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script> <!-- 제이쿼리 임포트해줘야지 사용가능함 -->
+</head>
+<body>
+	<h1>[상품등록]</h1>
+	<form name=frm action="sqlInsert.jsp">
+		상품명:<input type=text name=pname>
+		<hr>
+		가격:<input type=text name=price>
+		<hr>
+		<input type=submit value=저장>
+		<input type=reset value=취소>
+		<input type=button value=목록 id=btnList>
+	</form>
+</body>
+	<script>
+	$("#btnList").on("click", function(){
+		frm.action="list.jsp";
+		frm.submit();
+		
+		//location.href="list.jsp"
+	});
+	
+	$(frm).submit(function(event){
+		event.preventDefault();			//이벤트 동작 막아주기 =>sqlinsert로 안넘어감
+		if(confirm("등록하시겠습니까?")==false) return;
+		
+		var pname=$(frm.pname).val();
+		var price=$(frm.price).val();
+		
+		if(pname.replace(/[가-힣]/g, '')||pname==""){
+			//한글이 아닌 글자가 있는지
+			alert("한글만 입력하세요!");
+			$(frm.pname).val("");
+			$(frm.pname).focus();
+		}else if(price.replace(/[0-9]/g,'')||price==""){
+			//숫자가 아닌 글자가 있는지
+			alert("숫자만 입력하세요!");
+			$(frm.price).val("");
+			$(frm.price).focus();
+		}else{
+			frm.submit();
+			}
+	});
+	
+	//소문자가 아닌 글자가 있는지 (소문자체크 정규식)
+	//if(pname.replace(/[a-z]/g,''))
+			
+	//대문자가 아닌 글자가 있는지
+	//if(pname.replace(/[A-Z]/g, ''))
+		
+	//소문자나 대문자가 아닌 글자가 있는지
+	//if(pname.replace(/[A-Z]/gi,''))
+	
+	
+	
+	</script>
+</html>

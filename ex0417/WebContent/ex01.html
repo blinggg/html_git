@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>성적처리</title>
+<style>
+	h1,h3 {text-align:center;}
+	#content {width:700px; background:#9F81F7;color:white;
+			  margin:auto;padding:10px;}
+	#tbl{margin:auto;}
+	td {text-align:center;}
+	inputP{text-align:center;}
+	
+</style>
+</head>
+<body>
+	<h1>[성적처리]</h1>
+	<div id=content>
+		이름:<input type=text id=txtName>
+		<hr>
+		국어:<input type=text id=txtKor>
+		<hr>
+		영어:<input type=text id=txtEng>
+		<hr>
+		수학:<input type=text id=txtMat>
+		<hr>
+		<input type=button value=등록 id=btnInsert>
+		<h3>[성적목록]</h3>
+		<table id=tbl border=1 width=600>
+			<tr class=title>
+			<td>NO.</td>
+			<TD>이름</TD>
+			<TD>국어</TD>
+			<TD>영어</TD>
+			<TD>수학</TD>
+			<TD>수정</TD>
+			<TD>삭제</TD>
+			</tr>
+			
+			<tr class=row>
+			<td>1</td>
+			<TD>정은경</TD>
+			<TD><input class=kor type=text size=2 value=90></TD>
+			<TD><input class=eng type=text size=2 value=80></TD>
+			<TD><input class=mat type=text size=2 value=70></TD>
+			<TD><button class=update>수정</button></TD>
+			<TD><button class=delete>삭제</button></TD>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

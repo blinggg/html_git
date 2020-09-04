@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>   
+<title>[강좌목록]</title>
+<style>
+		select{height:23px;}
+		.title{text-align:center;background:#C7FAD3;color:black;}
+		.row:hover{background:#AADAB6;color:white;cursor:pointer;}
+		#tbl td, #tbl1 td{text-align:center;border:2px solid #28D450;}
+		#tbl, #tbl1{border-collapse:collapse;margin-bottom:10px;}
+	</style>
+</head>
+<body>
+	<h1>강좌목록</h1>
+	<div id=students>
+		<div id=insert>
+		강좌코드:<input type=text id=lcode maxlength=4 size=15 value=C301>
+		강좌명:<input type=text id=lname size=15 value=파일처리론>
+		<input type=button id=btnSave value=저장><br><br>
+		</div>
+		
+		<table id=tbl border=1 width=650></table>
+		<script id=temp type=text/x-handlebars-template>
+		<tr class=title>
+			<td><input type=checkbox class=chkAll></td>
+			<td>강좌번호</td>
+			<td>강좌명</td>
+			<td>내역삭제</td>
+		</tr>
+
+		{{#each array}}
+		<tr class=row>
+			<td><input type=checkbox class=chk></td>
+			<td class=lcode>{{lcode}}</td>
+			<td class=lname>{{lname}}</td>
+			<td><button>삭제</buttond></td>
+		</tr>
+		{{/each}}
+	</script>
+	
+	<div id=list>
+		강좌번호:<span id=lcode2></span>
+		강좌명:<span id=lname2></span>
+	</div>
+	
+	<table id=tbl1 border=1 width=650></table>
+		<script id=temp1 type=text/x-handlebars-template>
+		<tr class=title>
+			<td><input type=checkbox class=chkAll></td>
+			<td>학생번호</td>
+			<td>학생명</td>
+			<td>점수</td>
+			<td>점수수정</td>
+		</tr>
+
+		{{#each array}}
+		<tr class=row>
+			<td><input type=checkbox class=chk></td>
+			<td class=scode>{{scode}}</td>
+			<td>{{sname}}</td>
+			<td><input type=text class=grade size=5 value={{grade}}></td>
+			<td><button>수정</buttond></td>
+		</tr>
+		{{/each}}
+	</script>
+	</div>
+</body>
+<script>	
+	getList();
+	$("#tbl1").hide();
+	var lcode;
+	var lname;
+
+	
+	//학생 리스트 보이기
+	function getList(){
+		$.ajax({
+			type:"get",
+			url:"clist.jsp",
+			dataType:"json",
+			success:function(data){
+				var temp=Handlebars.compile($("#temp").html());
+            	$("#tbl").html(temp(data));
+           	 }
+		});
+	}
+	
+	//insert 작업하기
+	function insert(){
+		var lcode=$("#lcode").val();
+		var lname=$("#lname").val();
+		$.ajax({
+			type:"post",
+			url:"cinsert.jsp",
+			dataType:"json",
+			data:{"lcode":lcode, "lname":lname},
+			success:function(data){
+				if(data.cnt==0){
+					alert("저장되었다능!");
+					getList();
+				}else{
+					alert("이미 있다능!");
+					
+				}
+			}
+		});
+	}
+	
+	//저장버튼을 눌렀을 때
+	$("#btnSave").on("click", function(){
+		insert();
+	});
+	
+	//엔터키를 눌렀을 때
+	$("#lname").keydown(function(key){
+		if(key.keyCode==13){
+			insert();
+		}
+	});
+	
+	//삭제버튼을 눌렀을 때
+	$("#tbl").on("click", " .row button", function(){
+		//alert("!");
+		var row=$(this).parent().parent();
+		var lcode=row.find(".lcode").html();
+		if(!confirm("학번"+lcode+"의 수강내역을 진짜 삭제할꺼야?")) return;
+		
+		$.ajax({
+			type:"post",
+			url:"cdelete.jsp",
+			dataType:"json",
+			data:{"lcode":lcode},
+			success:function(data){
+				if(data.cnt==0){
+					alert("강좌를 삭제했습니다!");
+				}else{
+					alert("이미 수강신청한 학생이 있어서 삭제 못해!");
+				}
+				getList();
+			}
+	});
+});
+	
+	//수강신청한 학생 보기
+	$("#tbl").on("click", " .row", function(){
+		lcode=$(this).find(".lcode").html();
+		lname=$(this).find(".lname").html();
+		
+		alert(lcode+lname);
+
+		
+		
+		$.ajax({
+			type:"get",
+			url:"celist.jsp",
+			dataType:"json",
+			data:{"lcode":lcode},
+			success:function(data){
+				if(data.cnt==0){
+				alert("수강신청한 학생이 없습니다!");
+				}else{
+					$("#lcode2").html(lcode);
+					$("#lname2").html(lname);
+					var temp=Handlebars.compile($("#temp1").html());
+	            	$("#tbl1").html(temp(data));
+	            	$("#tbl1").show();
+					}
+				}
+			
+		});
+	});
+	
+	//학생 점수의 수정버튼을 눌렀을때
+	$("#tbl1").on("click", " .row button", function(){
+		//alert("!");
+		var row=$(this).parent().parent();
+		var scode=row.find(".scode").html();
+		var grade=row.find(".grade").html();
+		lcode=$("#lcode2").html();
+		if(!confirm("학번"+scode+"의 점수를 수정할꺼야?")) return;
+		alert(scode,grade,lcode);
+		$.ajax({
+	         type:"post",
+	         url:"update.jsp",
+	         data:{"scode":scode, "grade":grade, "lcode":lcode},
+	         success:function(){
+	           
+	         }
+	      });
+		 alert("수정되었습니다.");
+	});
+</script>
+</html>

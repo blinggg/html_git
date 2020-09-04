@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>연습</title>
+	<style>
+		*{font-family:'Times New Roman';}
+		body {background:gray;}
+		#page {background:white;width:1000px;margin:auto;
+			box-shadow:10px 10px 10px black;
+			border-radius:5px 5px 5px 5px;
+			padding:20px;}
+			
+		#content {width:900px; border:1px solid gray;
+				margin:auto;padding:20px;}
+		.tbl{width:700px;margin:auto;border-collapse:collapse;
+			margin-top:50px;}
+		.tbl td{border:1px solid #3B0B24;padding:5px;}	
+		.tbl .title{background:gray;color:white;text-align:center;}
+		.tbl .data:nth-child(2n){background:#BDBDBD;}
+		.tbl .data:hover{background:black;color:white;}
+		#menu{width:700px;margin:auto;}
+		a{text-decoration:none;color:gray; font-size:15px;line-heigth:20px;}
+		a:hover{color:black;background:#CECEF6}
+		.tblInsert{width:700px;background:#ECE0F8;
+					border:1px solid gray;padding:20px;margin:20px auto;}
+		.tblInsert td{padding:5px;}
+		input{heigth:25px;}
+		#te{margin:auto;}
+		#content h3{margin:auto;}
+		
+		
+		
+	</style>
+</head>
+<body>
+	<div id=page>
+		<div id=content>
+			<h3>글쓰기</h3>
+			<hr>
+		
+			<div id=menu>
+				<a href=#>목록</a>
+			</div>
+			<form class=frm>
+				<table class=tblInsert>
+					<tr>
+						<td>Title</td>
+						<td> <input type="text" size=80></td>
+					</tr>
+					<tr>
+						<td colspan=2>
+						<textarea id=te rows="10" cols="85"></textarea>
+						</td>
+					</tr>
+					
+					<tr>
+						<td colspan=2 style="text-align:center;">
+							<input class=button type="reset" value="취소">
+							<input class=button type="submit" value="저장">
+						</td>
+					</tr>
+					
+				</table>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

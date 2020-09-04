@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>   
+<title>[학과검색]</title>
+<style>
+	.title{text-align:center;background:#BDFF8B;color:black;}
+	.row:hover{background:#9CE465;color:white;cursor:pointer;}
+	#ptbl td, #stbl td, #ctbl td{text-align:center;border:2px solid #ABD58A;}
+	#ptbl, #stbl, #ctbl{border-collapse:collapse;margin-bottom:10px;}
+	.list{background:#9CE465;width:680px;padding:10px;margin-bottom:10px;color:white;}
+</style>
+</head>
+<body>
+	<h1>[학과검색]</h1>
+	<select id=dept>
+		<option >전산</option>
+		<option>건축</option>
+		<option>전자</option>
+	</select>
+	<input type=button value=검색 id=btnSearch>
+	
+	<div id=pro>
+		<h1>[교수목록]</h1>
+		<div class=list>
+			학과명:<span id=pdept></span>
+			교수인원:<span id=pcnt></span>
+		</div>
+	</div>
+	
+	<table id=ptbl border=1 width=700></table>
+	<script id="ptemp" type="text/x-handlebars-template">
+		<tr class=title>
+			<td>교수번호</td>
+			<td>교수명</td>
+			<td>소속학과</td>
+			<td>임용일</td>
+		</tr>
+		{{#each pArray}}
+		<tr>
+			<td class=pcode>{{pcode}}</td>
+			<td>{{pname}}</td>
+			<td class=pdept>{{dept}}</td>
+			<td>{{hiredate}}</td>
+		</tr>
+		{{/each}}
+	</script>
+	
+	<h1>[학생목록]</h1>
+	<div class=list>
+			학과명:<span id=sdept></span>
+			학생인원:<span id=scnt></span>
+	</div>
+	
+	<table id=stbl border=1 width=700></table>
+	<script id="stemp" type="text/x-handlebars-template">
+		<tr class=title>
+			<td>학생번호</td>
+			<td>학생명</td>
+			<td>학생학과</td>
+			<td>생년월일</td>
+		</tr>
+		
+		{{#each sArray}}
+		<tr class=row>
+			<td class=scode>{{scode}}</td>
+			<td>{{sname}}</td>
+			<td class=sdept>{{dept}}</td>
+			<td>{{birthday}}</td>
+		</tr>
+		{{/each}}
+
+	</script>
+	
+	<div id=enroll>
+		<h1>[강좌목록]</h1>
+		<div class=list>
+			평균점수:<span id=cavg></span>
+			강좌 수:<span id=ccnt></span>
+		</div>
+	
+		<table id=ctbl border=1 width=700></table>
+		<script id="ctemp" type="text/x-handlebars-template">
+			<tr class=title>
+				<td>강좌번호</td>
+				<td>강좌명</td>
+				<td>점수</td>
+			</tr>
+		
+			{{#each array}}
+				<tr>
+				<td>{{lcode}}</td>
+				<td>{{lname}}</td>
+				<td>{{grade}}</td>
+			</tr>
+			{{/each}}
+	</script>
+</div>
+
+</body>
+<script>
+var dept;
+var scode;
+$("#enroll").hide();
+
+	//셀렉트 박스를 클릭했을 때
+	$("#btnSearch").on("click", function(){
+		dept=$("#dept").val();
+		//alert(dept);
+		$("#sdept").html(dept);
+		$("#pdept").html(dept);
+		getList();
+	});
+	
+	//교수와 학생 목록 보이게 하기
+	function getList(){
+	$.ajax({
+		type:"get",
+		url:"list.jsp",
+		dataType:"json",
+		data:{"dept":dept},
+		success:function(data){
+			//alert(dept);
+			var temp=Handlebars.compile($("#ptemp").html());
+    		$("#ptbl").html(temp(data));
+    		var temp=Handlebars.compile($("#stemp").html());
+    		$("#stbl").html(temp(data));
+    		$("#pcnt").html(data.pcnt);
+    		$("#scnt").html(data.scnt);
+    		
+			}
+		});
+	}
+	
+	//행을 클릭했을 때
+	$("#stbl").on("click", " .row", function(){
+		//alert("얍!");
+		scode=$(this).find(".scode").html();
+		//alert(scode);
+		$("#enroll").show();
+		getCourses();
+	});
+	
+	//강좌 보이기
+	function getCourses(){
+		$.ajax({
+			type:"get",
+			url:"elist.jsp",
+			dataType:"json",
+			data:{"scode":scode},
+			success:function(data){
+				//alert();
+				var temp=Handlebars.compile($("#ctemp").html());
+	    		$("#ctbl").html(temp(data));
+	    		$("#cavg").html(data.avg);
+	    		$("#ccnt").html(data.cnt);
+				}
+			});
+		}
+	
+</script>
+
+</html>

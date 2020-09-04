@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script> <!-- 제이쿼리 임포트해줘야지 사용가능함 -->
+</head>
+<body>
+	<h1>[상품등록]</h1>
+		<div id=content>
+			상품명:<input type=text id=pname>
+			<hr>
+			가격:<input type=text id=price>
+			<hr>
+			<input type=button value=저장 id=btnSave>
+			<br>
+			
+			<br>
+			<input type=button value=선택삭제 id=delAll>
+			<br><br>
+			
+			<table id=tbl width=500 border=1>
+				<tr>
+					<td width=50><input type=checkbox id=chkAll></td>
+					<td width=50>NO.</td>
+					<td width=250>상품명</td>
+					<td width=50>가격</td>
+					<td width=50>삭제</td>
+				</tr>
+		
+			</table>
+		</div>
+</body>
+
+<script>
+
+	var pno=100;
+	
+	//저장 버튼을 눌렀을 때
+	$("#btnSave").on("click", function(){
+		if(!confirm("저장하시겠습니까?")) return;
+		pno=pno+1;
+	
+		var pname=$("#pname").val();
+		var price=$("#price").val();
+		
+		var str="<tr class='row'>";
+		str +="<td><input type='checkbox' class='chk'></td>";
+		str +="<td class=pno>"+pno+"</td>";
+		str +="<td class=pname>"+pname+"</td>";
+		str +="<td class=price>"+price+"</td>";
+		str +="<td><button class=del>삭제</button></td>"
+		str +="</tr>";
+		$("#tbl").append(str);
+	});
+	
+	//행에있는 삭제버튼을 클릭했을 때
+	$("#tbl").on("click",".row button ",function(){
+		if(confirm("삭제하시겠습니까?")==false) return;
+		var row=$(this).parent().parent();
+		$(row).remove();
+	});
+	
+	//선택삭제 버튼을 눌렀을 떄
+	$("#delAll").on("click",function(){
+		if(!confirm("선택한 행을 삭제하시겠습니까?")) return;
+		
+		$("#tbl .row .chk:checked").each(function(){
+			var row=$(this).parent().parent();
+			$(row).remove();
+			
+		});
+	});
+	
+	//전체선택 해제버튼을 눌렀을 때
+	$("#chkAll").on("click",function(){
+		if($(this).is(":checked")){
+		
+			$("#tbl .row .chk:checkbox").each(function(){
+				$(this).prop("checked",true);
+			});
+			
+		}else{
+			$("#tbl .row .chk:checkbox").each(function(){
+				$(this).prop("checked",false);
+			});
+		}
+	});
+	
+</script>
+</html>

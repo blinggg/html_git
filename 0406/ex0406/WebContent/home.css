@@ -1,0 +1,13 @@
+@charset "UTF-8";
+
+ /*주석*/
+	h1{color:white;
+	background:black;text-align:center;}
+	
+	h2{color:red;
+	background:yellow;text-align:right;}
+	
+	body{background:#D9E5FF;}
+	
+	h3{background:pink;}
+	

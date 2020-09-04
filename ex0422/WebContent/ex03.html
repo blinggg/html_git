@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script><!-- 핸들바 import -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+
+<title>[movie search]</title>
+	<style>
+	
+		#tbl{width:500px;border-collapse:collapse;border:1px solid gray;}
+      	td{border:2px solid black;}
+      	.row:hover{background:#FCF3CF;color:black;}
+      	.title{width:200px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;}
+      	.actor{width:200px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;}
+		.header{background:#F7DC6F;color:black;text-align:center;}
+		#search{background:#F7DC6F;width:500px;height:50px;margin-bottom:15px;}
+	</style>
+</head>
+<body>
+	<h1>[movie search]</h1>
+	<div id=search>
+		검색수:<span id=total></span>
+		<input type=text id=txtSearch value=극한직업>
+		<input type=button id=btnSearch value=검색>
+		total:<span id=page></span>
+		<hr>
+	</div>
+	
+	<input type=button id=btnSave value=선택저장><br><br>
+	<table id=tbl></table>
+	<script id="temp" type="text/x-handlebars-template">
+		<tr class=header>
+			<td><input type="checkbox" class=chkAll></td>
+			<td>제목</td>
+			<td>배우</td>
+			<td>저장</td>
+		</tr>
+		{{#each items}}
+			<tr class=row>
+				<td><input type="checkbox" class=chk></td>
+				<td><div class=title>{{{title}}}</div></td>
+				<td><div class=actor>{{{actor}}}</div></td>
+				<td><button>저장</button></td>
+			</tr>
+		{{/each}}
+	</script>
+	<hr>
+	<h1>[저장결과]</h1>
+	<table id=tbl1></table>
+	<script id="temp1" type="text/x-handlebars-template">
+		<tr class=header>
+			<td><input type="checkbox" class=chkAll></td>
+			<td>제목</td>
+			<td>주연배우</td>
+			<td>삭제</td>
+		</tr>
+		{{#each .}}
+			<tr class=row>
+				<td><input type="checkbox" class=chk></td>
+				<td><div class=title>{{{title}}}</div></td>
+				<td><div class=actor>{{{actor}}}</div></td>
+				<td class=btn><button>삭제</button></td>
+			</tr>
+		{{/each}}
+	</script>
+</body>
+	<script>
+		var display=5;
+		var start=1;
+		var page=1;
+		var total=0;
+		getList();
+		getMovie();
+	
+		
+		function getMovie(){
+			$.ajax({
+				type:"get",
+				url:"list.jsp",
+				dataType:"json",
+				success:function(data){
+					var temp=Handlebars.compile($("#temp1").html());   //temp에 temp id를 컴파일한다.
+		            $("#tbl1").html(temp(data));   //지정한 localData
+				}
+			});
+		}
+		//.row에 있는 저장버튼을 클릭했을 때		
+		$("#tbl").on("click", ".row button",function()){
+			if(!confirm("저장하시겠습니까?")) return;
+			var row=$(this).parent().parent();
+			var title=row.find(".title").text();
+			var actor=row.find(".actor").text();
+			alert(title+actor);
+		
+			
+			$.ajax({
+				type:"post",
+				url:"insert.jsp",
+				data:{"title":title, "actor":actor},
+				success:function(){
+			
+					alert("저장되었습니다.");
+					getMovie();
+				},
+				error:function(){
+					alert("저장되지 않았습니다.");
+				}
+			});
+		}
+		
+		$("#btnSearch").on("click", function(){
+			page=1;
+			getList();
+		});
+		
+		$("#txtSearch").keydown(function(key){
+			if(key.keyCode==13){
+				page=1;
+				getList();
+			}
+		});
+		
+		function getList(){
+			var query=$("#txtSearch").val();
+			
+				$.ajax({
+					type:"get",
+					url:"movie.jsp",
+					dataType:"json",
+					data:{"query":query, "display":display, "start":start},
+					success:function(data){
+						total=data.total;
+						$("#total").html(total+"건");
+						/*alert(total);*/
+						
+						var temp=Handlebars.compile($("#temp").html());   //temp에 temp id를 컴파일한다.
+				            $("#tbl").html(temp(data));   //지정한 localData
+					}
+				});
+				
+				$("#page").html(page);
+		}
+		
+		
+	</script>
+</html>

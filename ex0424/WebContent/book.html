@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script><!-- 핸들바 import -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+
+<title>읽고 싶은 책 찾기!</title>
+	<style>
+		.box{width:150px;margin:10px; padding:10px;
+		  	background:white;text-align:center;float:left;}
+		.box:hover{box-shadow:10px 10px 10px #E3DAF2;}
+		#main{width:740px;height:40px;background:#BFA6EC;margin-bottom:30px;overflow:hidden;padding:10px;}
+		#container{width:760px;background:#BFA6EC;overflow:hidden;margin-top:20px;}
+		.title, .authors{width:150px;font-size:15px;text-overflow:ellipsis;
+						white-space:nowrap;overflow:hidden;}
+		img{cursor:pointer;}
+	
+	</style>
+
+</head>
+<body>
+	<h2>[도서 검색]</h2>
+	<div id=main>
+	<input type=text id=txtSearch value=코딩>
+	<input type=button id=btnSearch value=검색>
+	검색건수:<span id=total></span>
+	  &nbsp;&nbsp;&nbsp;&nbsp;
+      <button id="btnPre">이전</button>
+      	현재 페이지:<span id="page"></span>
+      <button id="btnNext">다음</button>
+      
+	</div>
+	
+	<button id=checkAll>전체선택</button>
+	<div id=container></div>
+	<script id="temp" type="text/x-handlebars-template">
+			{{#each documents}}
+			<div class=box>
+				<img src={{thumbnail}} width=150 url={{url}}>
+				<td><input type="checkbox" class="chk"></td>
+				<div class=title>{{title}}</div>
+				<div class=authors>{{authors}}</div>
+				<div class=price>{{price}}</div>
+			</div>
+		{{/each}}
+	</script>
+	
+</body>
+	<script>
+	//변수선언하기
+	var page=1;
+	var is_end;
+	
+	//함수실행하기
+	getList();
+	
+	//이전버튼
+	$("#btnPre").on("click", function(){
+		if(page>1){
+			page=page-1;
+			getList();
+		}else{
+			alert("첫번째 페이지입니다!");
+		}
+	});
+	
+	//다음버튼
+	$("#btnNext").on("click", function(){
+		if(is_end==false){
+			page=page+1;
+			getList();
+		}else{
+			alert("마지막 페이지입니다!")
+		}
+	});
+	
+	//검색버튼
+	$("#btnSearch").on("click", function(){
+		page=1;
+		getList();
+	});
+	
+	//엔터키
+	$("#txtSearch").keydown(function(key){
+		if(key.keyCode==13){
+			getList();
+		}
+	});
+	
+	//이미지를 클릭했을 때 링크 넘어가기
+	$("#container").on("click", ".box img", function(){
+		var url=$(this).attr("url");
+		window.open(url, "검색", "width=500, height=600");
+		//location.href=url;
+	});
+	
+	//*전체 선택 버튼을 눌렀을 떄*
+	$("#checkAll").on("click", function(){
+	    if(confirm("선택하시겠습니까??")==false) return;
+	    
+		if($(this).is(":checked")){
+			 $("#tbl .row .chk").each(function(){
+		            $(this).prop("checked", true);
+		         });
+		      }else{
+		         $("#tbl .row .chk").each(function(){
+		            $(this).prop("checked", false);
+		         });
+		      }
+		});
+	
+	//실행 하면보이는 화면
+	function getList(){
+		var query=$("#txtSearch").val();	
+	
+	$.ajax({
+		data:"get",
+		url:"https://dapi.kakao.com/v3/search/book?target=title",
+		headers:{"Authorization":"KakaoAK 8435c4ce5155ad1a2bb35e6227a1f65f"},
+		dataType:"json",
+		data:{"query":query, "page":page, "size":8},
+		success:function(data){
+			is_end=data.meta.is_end;
+			var total=data.meta.pageable_count;
+			$("#total").html(total+"건");
+			$("#page").html(page);
+			var temp=Handlebars.compile($("#temp").html());   //temp에 temp id를 컴파일한다.
+            $("#container").html(temp(data));   
+			}
+		});
+	}
+	
+	</script>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</html>

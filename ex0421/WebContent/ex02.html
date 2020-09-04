@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script><!-- 핸들바 import -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+
+	<a href="ex01-1.html">[지역검색]</a>
+	<a href="ex02.html">[도서검색]</a>
+	<a href="ex03.html">[이미지검색]</a>
+	
+	<title>[도서 검색]</title>
+	<style>
+		#container{width:760px;background:#B3B6E7;overflow:hidden;margin-top:20px;}
+		.box{width:150px;margin:10px; padding:10px;background:white;
+			text-align:center;float:left;}
+		.box:hover{box-shadow:10px 10px 10px #B796DD ;}
+		.title, .authors{width:150px;font-size:15px;text-overflow:ellipsis;
+			white-space:nowrap;overflow:hidden;}
+		img{cursor:pointer;}
+	
+	</style>
+</head>
+<body>
+	<h1>[도서 검색]</h1>
+	<input type=text value=코딩 size=30 id=textSearch>
+	<input type=button value=검색 id=btnSearch>
+	<br>
+	검색 결과:<span id=total></span>
+	
+	<div id=container></div>
+	<br>
+	<tr>
+        <td colspan=2 style=text-align:center;>
+        <input type=button value=이전 id=btnPre>
+        <input type=button value=다음 id=btnNext>
+        </td>
+        page:<span id="page"></span>
+    </tr> 
+	
+	<script id="temp" type="text/x-handlebars-template">
+		{{#each documents}}
+			<div class=box>
+				<img src={{thumbnail}} width=150 url={{url}}>
+				<div class=title>{{title}}</div>
+				<div class=authors>{{authors}}</div>
+				<div class=price>{{price}}</div>
+			</div>
+		{{/each}}
+
+	</script>
+</body>
+	<script>
+	var page=1;
+	var is_end;
+	
+	//함수 호출하기
+	getList();
+	
+	$("#textSearch").keydown(function(key){
+	      if(key.keyCode==13){
+	         page=1;
+	         getList();
+	      }
+	   });
+	
+	//검색 버튼을 눌렀을 때
+	$("#btnSearch").on("click", function(){
+		page=1;
+		getList();
+	});
+	
+	//이전 버튼을 눌렀을 때
+	$("#btnPre").on("click", function(){
+		if(page>1){
+			page=page-1;
+			getList();
+		}else{
+			alert("첫번쨰 페이지입니다!");
+		}
+	});
+	
+	//다음 버튼을 눌렀을 때
+	$("#btnNext").on("click",function(){
+		if(is_end==false){
+			page=page+1;
+			getList();
+		}else{
+			alert("마지막 페이지입니다!");
+		}
+	});
+	
+	//이미지를 클릭했을 때
+	$("#container").on("click", ".box img", function(){
+		var url=$(this).attr("url");
+		window.open(url, "검색", "width=500, height=600");
+		//location.href=url;
+	});
+	
+	 function getList(){
+		 var query=$("#textSearch").val();
+	      $("#page").html(page);
+	      
+	      $.ajax({
+	         type:"get",
+	         url:"https://dapi.kakao.com/v3/search/book?target=title",
+	         headers:{"Authorization":"KakaoAK 8435c4ce5155ad1a2bb35e6227a1f65f"},
+	         dataType:"json",
+	         data:{"query":query,"page":page,"size":12},
+	         success:function(data){
+	        	 
+	            is_end=data.meta.is_end;
+	            var total=data.meta.pageable_count;
+	            $("#total").html(total+"건");
+	            
+	            var temp=Handlebars.compile($("#temp").html());   //temp에 temp id를 컴파일한다.
+	            $("#container").html(temp(data));   //지정한 localData를 테이블에 출력한다 .
+	         }
+	      });
+	   }
+	
+	</script>
+</html>

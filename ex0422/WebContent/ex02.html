@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script><!-- 핸들바 import -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+
+<title>blog search</title>
+<style>
+	h1{text-align:center;}
+	body{background:#F9E79F;}
+	#tbl{background:white;margin:auto;}
+	#search{text-align:center;}
+	#temp{text-align:center;}
+</style>
+</head>
+<body>
+	<h1>[blog search]</h1>
+	<div id=search>
+		검색수:<span id=total></span><br>
+		<input type=text id=txtSearch value=유아인>
+		<input type=button id=btnSearch value=검색>
+		<input type=button id=btnPre value=◀>
+		<input type=button id=btnNext value=▶>
+		total:<span id=page></span>
+		<hr>
+		
+	</div>
+	<table id=tbl></table>
+	<script id="temp" type="text/x-handlebars-template">
+		{{#each items}}
+				<tr>s
+					<td>{{{title}}}</td>
+				</tr>
+		{{/each}}	
+</script>
+	<hr>
+	
+</body>
+	<script>
+	var display=10;
+	var start=1;
+	var total;
+	var page=1;
+	
+	getList();
+	
+	$("#btnSearch").on("click", function(){
+		page=1;
+		getList();
+	});
+	
+	$("#txtSearch").keydown(function(key){
+		if(key.keyCode==13){
+			page=1;
+			getList();
+		}
+	});
+	
+	//이전 버튼을 눌렀을 때
+	$("#btnPre").on("click", function(){
+		if(start>1){
+			start=start-display;
+			page=page-1;
+			getList();
+		}else{
+			alert("첫번째 페이지 입니다!")
+		}
+	});
+	
+	//다음 버튼을 눌렀을 때
+	$("#btnNext").on("click", function(){
+		if(start+display<total){
+			start=start+display;
+			page=page+1
+			getList();
+		}else{
+			alert("마지막 페이지 입니다!")
+		}
+	});
+	
+	function getList(){
+		var query=$("#txtSearch").val();
+		
+			$.ajax({
+				type:"get",
+				url:"blog.jsp",
+				dataType:"json",
+				data:{"query":query, "display":display, "start":start},
+				success:function(data){
+					total=data.total;
+					$("#total").html(total+"건");
+					/*alert(total);*/
+					
+					
+					var temp=Handlebars.compile($("#temp").html());   //temp에 temp id를 컴파일한다.
+			            $("#tbl").html(temp(data));   //지정한 localData
+				}
+			});
+			
+			$("#page").html(page);
+		}
+	</script>
+</html>

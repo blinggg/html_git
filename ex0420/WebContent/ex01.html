@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>카카오 웹검색</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script> <!-- 제이쿼리 임포트해줘야지 사용가능함 -->
+	<style>
+		#tbl{margin:10px;}
+	</style>
+
+</head>
+<body>
+	<h1>[카카오 웹검색]</h1>
+	<div id=search>
+		<input type=text value=공유 id=txtSearch>
+		<input type=button value=검색 id=btnSearch>
+	
+	</div>	
+	<table id=tbl width=700 border=1></table>
+</body>
+<script>
+    // value=공유일 떄 실행되는 메서드
+	var query=$("#txtSearch").val();
+	getList();	//메서드 호출하기
+	
+	
+	//검색버튼을 눌렀을 때 새로운 내용으로 검색하기
+	$("#btnSearch").on("click", function(){
+		query=$("#txtSearch").val();
+		getList();
+	});
+	
+	
+	
+	function getList(){ //실행하기 위해서는 메서드를 호출해야함
+		$.ajax({											//페이지 이동없이 결과 출력함
+			type:"get",
+			url:"https://dapi.kakao.com/v2/search/web",
+			headers:{"Authorization":"KakaoAK 8435c4ce5155ad1a2bb35e6227a1f65f"},
+			dataType:"json", //ajax 처리를 하기위해서
+			data:{"query":query, "page":1, "size":5}, //내가 검색하고자 하는 검색어/페이지/출력되는 데이터 갯수
+			success:function(data){
+				/*alert("성공");*/
+				
+				var str="";
+				$(data.documents).each(function(){	//반복문
+					var title=this.title;
+					var contents=this.contents;
+					var url=this.url;
+					
+					str +="<tr>";
+					str +="<td>"+ title + "</td>";
+					str +="</tr>";
+					str +="<tr>";
+					str +="<td>"+ contents + "</td>";
+					str +="</tr>";
+				});
+				
+				$("#tbl").html(str); //str값을 tbl에 넣어주기
+			}
+		});
+	}
+	
+	});
+
+</script>
+</html>

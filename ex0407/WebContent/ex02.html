@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>폼(form)태그 연습</h1>
+	<form>
+	<table border=1, witdh=500>
+	<tr>
+		<td whith=100>아이디:</td>
+		<td><input type="text" name="id"></td>
+	</tr>
+	
+	<tr>
+		<td width=100>비밀번호:</td>
+		<td><input type="password" name="pass"></td>
+	</tr>
+	
+	<tr>
+		<td width=100>사진등록:</td>
+		<td><input type="file" name="file"></td> <!-- name을 지정해줘야 데이터베이스상에서 저장됩니다. -->
+	</tr>
+	
+	<tr>
+		<td width=100>성별:</td>
+		<td><input type="radio" name="gender" value="M">남 
+		<input type="radio" name="gender" value="f" checked>여
+		</td>
+	</tr>
+	
+	<tr>
+		<td width=100>취미:</td>
+		<td><input type="checkbox" name="hobby1" value="e">운동 
+		<input type="checkbox" name="hobby2" value="emf" checked>영화감상
+		</td>
+	</tr>
+	
+	<tr>
+		<td width=100>비고:</td>
+		<td>
+		<textarea rows="5" cols="50" name="remark"></textarea>
+		</td>
+	</tr>
+	
+	<tr>
+		<td colspan=2>
+			<input type="reset" value="취소">
+			<input type="submit" value="저장">
+			<input type="button" value="목록">
+		
+		</td>
+		
+		
+	</table>
+	</form>
+	</div>
+
+</body>
+</html>

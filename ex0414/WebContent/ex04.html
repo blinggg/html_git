@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+	<title>예제04</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script> <!-- 제이쿼리 임포트해줘야지 사용가능함 -->
+	<style>
+		#box {width:500px; height:300px; border:1px solid black;
+				margin-top:10px;}
+	</style>
+</head>
+<body>
+	<input id=content type=text size=50>
+	<button id=btnInsert>입력</button>
+	<button id=btnDelete>삭제</button>
+	<div id=box></div>
+</body>
+
+<SCRIPT>
+	$("#btnInsert").on("click",function(){
+		var content=$("#content").val();
+		
+		if(content==false){
+			alert("값을 입력하세요");
+		}else{
+			$("#box").append("<h1>"+content+"</h1>");
+		}
+		
+		$("#content").val("");
+		$("#content").focus();
+		
+	});
+</SCRIPT>
+</html>

@@ -1,0 +1,20 @@
+@charset "UTF-8";
+
+body{background:gray;}
+	#page{background:white;width:1000px;
+			margin:50px auto;padding:20px;
+			box-shadow:10px 10px 10px black;}
+	h1, h3{text-align:center;}
+	#nav span{background:green;text-size:20px;
+			color:white;
+			margin:10px;padding:10px;}
+	#nav span:hover{background:white;color:green;}
+	#nav {background:green;padding:10px;}
+	.group{background:yellow;width:800px;
+		margin:10px auto;padding:10px;overflow:hidden;
+		border:5px solid green;}
+	.box{width:180px;background:green;
+		heigth:100px;float:left;margin:5px;text-align:center;padding:0.5px;
+		border-radius:10px 10px 10px 10px black;}
+	.title,.price{font-size:15px;color:yellow;}
+	.box:hover{box-shadow:10px 10px 10px black;}

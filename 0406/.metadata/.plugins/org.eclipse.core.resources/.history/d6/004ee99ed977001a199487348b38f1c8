@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>홍길동 쇼핑몰</title>
+</head>
+<body>
+
+<header>
+<h1>홍길동 쇼핑몰</h1>
+<hr/>
+</header>
+
+<nav>
+</nav>
+
+<section>
+	<div>
+	<span>
+		<img src="http://placehold.it/200x200"><br>
+		상품명:더블침대<br>
+		가격:100만원
+	</span>
+	
+	<span>
+		<img src="http://placehold.it/200x200"><br>
+		상품명:더블침대<br>
+		가격:100만원
+	</span>
+	
+	<span>
+		<img src="http://placehold.it/200x200"><br>
+		상품명:더블침대<br>
+		가격:100만원
+	</span>
+	
+	<span>
+		<img src="http://placehold.it/200x200"><br>
+		상품명:더블침대<br>
+		가격:100만원
+	</span>
+	
+	</div>
+</section>
+
+
+
+
+
+</body>
+</html>

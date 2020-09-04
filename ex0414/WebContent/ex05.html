@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>주소수정</title>
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script> <!-- 제이쿼리 임포트해줘야지 사용가능함 -->
+
+</head>
+<body>
+	<h1>[주소수정]</h1>
+	<form name=frm action="update.jsp">
+		<input type=hidden name=ano value=1>
+		이름:<input type=text name=textname value=홍길동>
+		<hr>
+		주소:<input type=text name=textaddress>		
+		<hr>
+		<input type=submit value=수정 id=btnUpdate>
+		<input type=reset value=취소 id=btnCancel>
+		<input type=button value=목록 id=btnList>
+		<input type=button value=삭제 id=btnDelete>
+
+	</form>
+</body>
+<script>
+	$("#btnDelete").click(function(){
+		if(confirm("삭제하시겠습니까?")){
+		frm.action="delete.jsp";
+		frm.submit();
+		};
+	});
+	
+	$("#btnList").click(function(){
+		location.href="btnList.jsp";
+	});
+	
+	$(frm).submit(function(event){
+		if(confirm("수정하시겠습니까?")){
+			var name=$(frm.textname).val(); //id, name값을 중복으로 줄 필요는 없다.
+			var address=$(frm.textaddress).val();
+			if(name.replace(/[가-힣]/g, "")!=0){ //한글입력만 가능한 정규식
+				alert("이름을 한글로 입력하세요!")
+				$(frm.textname).focus();
+			
+			}else if(address==""){
+				alert("주소를 입력하세요!")
+				$(frm.textaddress).focus();
+				
+			}
+		}else{
+			
+		}
+	});
+</script>
+</html>

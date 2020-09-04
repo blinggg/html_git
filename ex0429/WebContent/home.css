@@ -1,0 +1,12 @@
+@charset "UTF-8";
+
+	.title{text-align:center;background:#FFB0B0;color:white;}
+	.row:hover{background:#F7DCDC;color:white;cursor:pointer;}
+	#tbl td, #etbl td{text-align:center;border:2px solid #FCD2D2;}
+	#tbl, #etbl{border-collapse:collapse;width:650px;}
+	#clist,#slist{background:#FFB0B0;width:630px;color:white;
+				height:50px;margin-bottom:10px;padding:10px;}
+	#clist{width:630px;padding:10px;}
+	#enroll{width:630px;padding:10px;
+	border:1px solid #ED7D7D;margin-top:10px;margin-bottom:10px;}
+	.lti{background:#FFB0B0;}

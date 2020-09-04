@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>연습4</title>
+</head>
+<body>
+	<h1>목록태크</h1>
+	<h3>과일목록</h3>
+	<ul>
+		<li>사과</li>
+		<li>바나나</li>
+		<li>오렌지</li>	
+	</ul>
+</body>
+</html>

@@ -1,0 +1,17 @@
+@charset "UTF-8";
+
+
+*{font-family:'맑은 고딕';}
+body{background: #BECDFF;}
+#page{background:white;width:1000px;
+		margin:auto;box-shadow:10px 10px 10px black;
+		padding:30px;}
+#header h1{text-align:center;font-size:30px;}
+#footer h3{text-align:center;font-style:italic;}
+.box{border:1px dotted black;padding:10px;margin-bottom:10px;
+	 width:850px;border-radius:10px 10px 10px;text-align:center;}
+.title{line-height:5px;text-align:center;}/*라인의 높이지정할 때*/
+#menu{width:100px;float:right;}
+a{text-decoration:none;line-heigth:20px;font-size:20px;color:black;font-weigth:bold}
+a:hover{background:gray;color:white;}
+#box1{width:100px;float:right;border:1px dotted black;padding:5px;}

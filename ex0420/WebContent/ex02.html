@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>[지역검색]</title>
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script> <!-- 제이쿼리 임포트해줘야지 사용가능함 -->
+<style>
+	#pagination{margin:auto;}
+	#tbl{margin:10px;}
+	
+
+</style>
+</head>
+<body>
+	<h1>[지역검색]</h1>
+	<div id=search>
+		<b>검색수:</b>
+		<span id=total></span>
+		<hr>
+		<input type=text value="용현동 중국집" id=txtSearch>
+		<input type=button value=검색 id=btnSearch>
+		<hr>
+	
+	</div>	
+	<table id=tbl width=700 border=1></table>
+	<div id=pagination>
+		<button id=btnPre>◀</button>
+		<button id=btnNext>▶</button>
+	</div>
+</body>
+
+<script>
+	var page=1;
+	var query=$("#txtSearch").val();
+	getList();
+	
+	//txtsearch에 입력 후 검색을 누르면 데이터 불러오기
+	$("#btnSearch").on("click", function(){
+		query=$("#txtSearch").val();
+		getList();
+	});
+	
+	//txtSearch에 입력할때마다 데이터를 불러오기
+	$("#txtSearch").keydown(function(){
+		query=$("#txtSearch").val();
+		getList();
+	});
+	
+	function getList(){
+		$.ajax({
+			type:"get",
+			url:"https://dapi.kakao.com/v2/local/search/keyword.json",
+			headers:{"Authorization":"KakaoAK 8435c4ce5155ad1a2bb35e6227a1f65f"},
+			dataType:"json",
+			data:{"query":query, "page":page, "size":10},
+			success:function(data){
+				var total=data.meta.total_count;
+				/*alert(total);*/
+				$("#total").html("<b>"+total+"건</b>");
+				
+				/*alert("성공");*/
+				var str="";
+				$(data.documents).each(function(){
+					var place=this.place_name;
+					var address=this.address_name;
+					var tel=this.phone;
+					str +="<tr>";
+					str +="<td>"+place+"</td>";
+					str +="<td>"+address+"</td>";
+					str +="<td>"+tel+"</td>";
+					str +="</tr>";
+				});
+				$("#tbl").html(str);
+			}
+	});
+};
+
+</script>
+</html>

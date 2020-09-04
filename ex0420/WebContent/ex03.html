@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>도서검색</title>
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script> <!-- 제이쿼리 라이브러리 임포트=> 사용가능함 -->
+	<style>
+		#tbl{width:700px;border-collapse:collapse;} /*기능알기*/
+		td{border:1px solid green;}
+		.row:hover{background:gray;color:white;}
+		.title{width:400px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;} /*말줄임표 사용*/
+		.authors{width:200px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;} /*말줄임표 사용*/}
+		.price{width:100px;}
+	</style>
+</head>
+<body>
+	<h1>[도서검색]</h1>
+	<div id=search>
+		검색수:<span id=total></span>
+		<input type=text value="안드로이드" id=txtSearch>
+		<input type=button value=검색 id=btnSearch>
+	</div>
+	
+	<table id=tbl></table>
+	<div id=pagination>
+		<button id=btnPre>이전</button>
+		<button id=btnNext>다음</button>
+		현재페이지:<span id=page></span>
+	</div>
+</body>
+<script>
+
+	var page=1;	//page 선언
+	var is_end;	//마지막 페이지 선언
+	
+	//메서드 호출하기>> 호출을 안하면 함수 실행이 안됨;
+	getList();
+	
+	//검색하면 실행하는 메서드
+	$("#btnSearch").on("click",function(){
+		page=1;	//페이지 초기화
+		getList(); //메서드 실행
+	});
+	
+	//엔터키를 실행했을 때 메서드
+	$("#txtSearch").keydown(function(key){
+		if(key.keyCode==13){ //엔터키를 눌렀을 때(key)값을 받아야함
+			page=1;
+			getList();
+		}
+	});
+	
+	//이전 버튼을 눌렀을 때
+	$("#btnPre").on("click",function(){
+		/*if(is_end==true){
+			("#page")=page-1;
+		}else{
+			page=page;
+		}
+		getList();*/
+		if(page>1){
+			page=page-1;
+			getList();
+		}
+	});
+	
+	//다음 버튼을 눌렀을 때
+	$("#btnNext").on("click",function(){
+		if(is_end==false){
+			page=page+1;
+			getList();
+			}
+		});
+
+function getList(){
+	var query=$("#txtSearch").val(); //쿼리값 지정
+	$("#page").html(page);
+	
+	//1회만 실행하기
+	$.ajax({
+		type:"get",
+		headers:{"Authorization": "KakaoAK 8435c4ce5155ad1a2bb35e6227a1f65f"},
+		dataType:"json",
+		data:{"query":query, "page":page, "size":10},
+		
+		url:"https://dapi.kakao.com/v3/search/book?target=title",
+		success:function(res){
+			/*alert("성공");*/
+			var total=res.meta.pageable_count;
+			is_end = res.meta.is_end;
+			/*alert(is_end);*/
+			
+			/*alert(total);*/
+			$("#total").html("<b>"+total+"</b>건");
+			var str=""; //출력할 변수 반복문 밖에서 선언
+			$(res.documents).each(function(){
+				var title=this.title;
+				var authors=this.authors;
+				var price=this.price;
+				var url=this.url;
+				
+				str +="<tr class=row>";
+				str +="<td><div class=title><a href="+url+">"+title+"</a></div></td>";
+				str +="<td><div class=authors>"+authors+"</div></td>";
+				str +="<td><div class=price>"+price+"</div></td>";
+				str +="</tr>";
+				
+			});
+			$("#tbl").html(str);
+		}
+	});
+}
+
+</script>
+</html>

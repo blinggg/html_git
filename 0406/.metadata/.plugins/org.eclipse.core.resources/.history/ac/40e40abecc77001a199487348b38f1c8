@@ -1,0 +1,15 @@
+<html>
+<head>
+ <title>HTML TEXT Basic Page</title>
+</head>
+<body>
+ <a href="http://naver.com/">네이버</a><br/>
+ <a href="http://daum.com/">다음</a><br/
+ <a href="#alpha">Alpha 부분</a><br/>
+ <a href="#beta">Beta 부분</a><br/>
+ <h1 id="alpha">Alpha</h1>
+ <p>여기부터는 같은 파일 내에 있는 Alpha영역입니다.</p>
+ <h1 id="beta">Beta</h1>
+ <p>여기부터는 같은 파일 내에 있는 Beta영역입니다.</p>
+</body>
+</html>

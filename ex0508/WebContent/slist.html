@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>   
+<title>학생입력하기</title>
+	<style>
+		select{height:23px;}
+		.title{text-align:center;background:#7F43B1;color:white;}
+		.row:hover{background:#DFBBFD;color:white;cursor:pointer;}
+		#tbl td{text-align:center;border:2px solid #E3C7FA;}
+		#tbl{border-collapse:collapse;margin-bottom:10px;}
+	</style>
+</head>
+<body>
+	<h1>[학생입력하기]</h1>
+	<div id=students>
+		학과:<select id=dept>
+			<option>전산</option>
+			<option>전자</option>
+			<option>건축</option>
+			</select>
+		학번:<input type=text id=scode maxlength=8 size=10 value=92414029>
+		성명:<input type=text id=sname size=10>
+		<input type=button id=btnSave value=저장><br><br>
+		
+		<table id=tbl border=1 width=650></table>
+	<script id=temp type=text/x-handlebars-template>
+		<tr class=title>
+			<td><input type=checkbox class=chkAll></td>
+			<td>학생번호</td>
+			<td>학생명</td>
+			<td>학생학과</td>
+			<td>삭제버튼</td>
+		</tr>
+
+		{{#each array}}
+		<tr class=row>
+			<td><input type=checkbox class=chk></td>
+			<td class=scode>{{scode}}</td>
+			<td>{{sname}}</td>
+			<td>{{dept}}</td>
+			<td><button>삭제</buttond></td>
+		</tr>
+		{{/each}}
+	</script>
+	</div>
+</body>
+<script>	
+	var scode;
+	var sname;
+	var dept;
+	getList();
+	
+	//학생 리스트 보이기
+	function getList(){
+		$.ajax({
+			type:"get",
+			url:"list.jsp",
+			dataType:"json",
+			success:function(data){
+				var temp=Handlebars.compile($("#temp").html());
+            	$("#tbl").html(temp(data));
+           	 }
+		});
+	}
+	
+	//저장버튼을 클릭했을 때
+	$("#btnSave").on("click", function(){
+		if(!confirm("학생을 등록하시겠습니까?")) return;
+		scode=$("#scode").val();
+		sname=$("#sname").val();
+		dept=$("#dept").val();
+		getInsert();
+		getList();
+	});	
+	
+	//저장하는 ajax
+		function getInsert(){
+		$.ajax({
+			type:"post",
+			url:"sinsert.jsp",
+			dataType:"json",
+			data:{"scode":scode, "sname":sname, "dept":dept},
+			success:function(data){
+				if(data.cnt==1){
+					alert("학생이 이미 존재합니다.");
+				}else{
+					alert("저장되었습니다!");
+				}
+				var temp=Handlebars.compile($("#temp").html());
+            	$("#tbl").html(temp(data));
+           		 }
+			});
+		}
+
+	//엔터키를 눌렀을 때
+	$("#sname").keydown(function(key){
+		if(key.keyCode==13){
+			if(!confirm("학생을 등록하시겠습니까?")) return;
+			
+			scode=$("#scode").val();
+			sname=$("#sname").val();
+			dept=$("#dept").val();
+			getInsert();
+			getList();
+		}
+	});
+	
+	//삭제버튼을 클릭했을 때
+	$("#tbl").on("click", " .row button", function(){
+		//alert("!");
+		var row=$(this).parent().parent();
+		scode=row.find(".scode").html();
+		alert(scode);
+		
+		if(!confirm("학번"+scode+"의 학생내역을 진짜 삭제할꺼야?")) return;
+			
+			$.ajax({
+				type:"post",
+				url:"sdelete.jsp",
+				dataType:"json",
+				data:{"scode":scode},
+				success:function(data){
+				//alert(scode);
+					var cnt=data.cnt;
+					if(cnt==0){
+						alert("삭제했어ㅎㅎ!");
+						getList();
+					}else{
+						alert("수강신청 데이터가 있어 삭제할 수 없다능~");
+						getList();
+					}
+						var temp=Handlebars.compile($("#temp").html());
+	            		$("#tbl").html(temp(data));
+				}
+		});
+	});
+	
+	
+</script>
+
+</html>

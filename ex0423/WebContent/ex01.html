@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="UTF-8">
+   <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>   
+   <title>상품검색</title>
+   <style>
+      #tbl, #tbl1{width:700px; border-collapse:collapse;}
+      td{border:1px solid black;padding:3px;}
+      
+      .title{width:300px;
+      text-overflow:ellipsis;white-space:nowrap;overflow:hidden;}
+      .productId{width:100px;}
+      .lprice{text-align:right;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;}
+      .hprice{text-align:right;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;}
+      
+      #search, #search1{width:680px;padding:10px;background:#F16D76;color:white; margin-bottom:10px;}
+      .head{text-align:center; background:#F16D76; color:white;}
+      .row:hover{color:white; background:#E81D3F;}
+   </style>
+</head>
+<body>
+   <h1>상품검색</h1>
+   <div id="search">
+      <input type="text" value="노트북" id="txtSearch">
+      <input type="button" value="검색" id="btnSearch">
+      검색건수:<span id="total"></span>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <button id="btnPre">이전</button>
+      <button id="btnNext">다음</button>
+      페이지:<span id="page"></span>
+   </div>
+   <input type="button" value="선택저장" id="btnSave">
+   <table id="tbl"></table>
+   <script id="temp" type="text/x-handlebars-template">
+      <tr class=head>
+         <td><input type="checkbox" id="chkAll"></td>
+         <td>상품코드</td>
+         <td>상품명</td>
+         <td>최저가격</td>
+         <td>최고가격</td>
+      </tr>
+      {{#each items}}
+      <tr class=row>
+         <td><input type="checkbox" class="chk"></td>
+         <td><div class=productId>{{{productId}}}</div></td>
+         <td><div class=title>{{{title}}}</div></td>
+         <td><div class=lprice>{{{lprice}}}</div></td>
+         <td><div class=hprice>{{{hprice}}}</div></td>
+      </tr>
+      {{/each}}
+   </script>
+   <hr>
+   <h1>상품목록</h1>
+   <div id="search1">
+      등록 상품갯수:<span id="count"></span>
+   </div>
+   <input type="button" value="선택삭제" id="btnDelete">
+   <table id="tbl1"></table>
+   <script id="temp1" type="text/x-handlebars-template">
+      <tr class=head>
+         <td><input type="checkbox" id="chkAll"></td>
+         <td>상품명</td>
+         <td>최저가격</td>
+         <td>최고가격</td>
+         <td>수정</td>
+      </tr>
+      {{#each items}}
+      <tr class=row sid={{sid}}>
+         <td><input type="checkbox" class="chk"></td>
+         <td>{{{title}}}</td>
+         <td><input type="text" value="{{{lprice}}}" class=lprice size=5></td>
+         <td><input type="text" value="{{{hprice}}}" class=hprice size=6></td>
+         <td><button>수정</button>
+      </tr>
+      {{/each}}
+   </script>   
+</body>
+<script>
+   var display=5;
+   var start=1;
+   var page=1;
+   var total=0;
+   getList();
+   getShop();
+   
+   function getShop(){
+      $.ajax({
+         type:"get",
+         url:"list.jsp",
+         dataType:"json",
+         success:function(data){
+            $("#count").html(data.total);
+            var temp=Handlebars.compile($("#temp1").html());
+            $("#tbl1").html(temp(data));
+         }
+      });   
+   }
+   
+   //수정버튼을 클릭했을때
+   $("#tbl1").on("click", ".row button", function(){
+      var row=$(this).parent().parent();
+      var sid=row.attr("sid");
+      var lprice=row.find(".lprice").val();
+      var hprice=row.find(".hprice").val();
+      
+      if(confirm("선택행을 수정하시겠습니까?")==false) return;
+      $.ajax({
+         type:"post",
+         url:"update.jsp",
+         data:{"sid":sid,"lprice":lprice,"hprice":hprice},
+         success:function(){
+            alert("수정되었습니다.")
+         },
+         error:function(){
+            alert("수정실패했습니다.");
+         }
+      });
+   });
+   
+   //선택저장 버튼을 클릭했을때
+   $("#btnSave").on("click", function(){
+      if(confirm("선택행을 저장하시겠습니까?")==false) return;
+      $("#tbl .row .chk:checked").each(function(){
+         var row = $(this).parent().parent();
+         var sid=row.find(".productId").text();
+         var title=row.find(".title").text();
+         var lprice=row.find(".lprice").text();
+         var hprice=row.find(".hprice").text();
+         $(this).prop("checked", false);   
+
+         $.ajax({
+            type:"post",
+            url:"insert.jsp",
+            data:{"sid":sid, "title":title, "lprice":lprice, "hprice":hprice},
+            success:function(){}
+         });
+
+      });
+      
+      alert("저장 되었습니다.");
+      getShop();
+      $("#tbl #chkAll").prop("checked", false);
+   });
+   
+   //선택삭제 버튼을 클릭했을때
+   $("#btnDelete").on("click", function(){
+      if(confirm("선택행을 삭제하시겠습니까?")==false) return;
+      $("#tbl1 .row .chk:checked").each(function(){
+         var row = $(this).parent().parent();
+         var sid = row.attr("sid");
+         $(this).prop("checked", false);   
+         $.ajax({
+            type:"post",
+            url:"delete.jsp",
+            data:{"sid":sid},
+            success:function(){}
+         });
+      });
+      
+      alert("삭제 되었습니다.");
+      getShop();
+      $("#tbl1 #chkAll").prop("checked", false);
+   });
+   
+   //상품 검색 전체선택 버튼을 클릭했을때
+   $("#tbl").on("click", "#chkAll", function(){
+      if($(this).is(":checked")){
+         $("#tbl .row .chk").each(function(){
+            $(this).prop("checked", true);
+         });
+      }else{
+         $("#tbl .row .chk").each(function(){
+            $(this).prop("checked", false);
+         });
+      }
+   });
+   
+   //상품 목록 전체선택 버튼을 클릭했을때
+   $("#tbl1").on("click", "#chkAll", function(){
+      if($(this).is(":checked")){
+         $("#tbl1 .row .chk").each(function(){
+            $(this).prop("checked", true);
+         });
+      }else{
+         $("#tbl1 .row .chk").each(function(){
+            $(this).prop("checked", false);
+         });
+      }
+   });
+   
+   function getList(){
+      var query=$("#txtSearch").val();
+      $.ajax({
+         type:"get",
+         url:"shop.jsp",
+         data:{"query":query,"display":display,"start":start},
+         dataType:"json",
+         success:function(data){
+            var temp=Handlebars.compile($("#temp").html());
+            $("#tbl").html(temp(data));
+            total=data.total;
+            $("#total").html(total);
+            $("#page").html(page);
+         }
+      });
+   }
+   
+   $("#btnSearch").on("click", function(){
+      getList();
+   });
+
+   $("#txtSearch").keydown(function(key){
+      if(key.keyCode==13){
+         getList();
+      }
+   });
+   
+   $("#btnPre").on("click", function(){
+      if(page > 1){
+         page=page-1;
+         start=start-display;
+         getList();
+      }
+   });
+   
+   $("#btnNext").on("click", function(){
+      if(start+display < total){
+         page=page+1;
+         start=start+display;
+         getList();
+      }
+   });
+</script>
+</html>
